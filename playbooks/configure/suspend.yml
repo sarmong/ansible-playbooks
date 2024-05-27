@@ -9,6 +9,7 @@
       copy:
         src: "{{ item }}"
         dest: "/etc/systemd/system/{{ item | basename }}"
+        mode: preserve
       loop:
         - ~/.local/bin/services/services/suspend/suspend.service
         - ~/.local/bin/services/services/suspend/suspend.sh

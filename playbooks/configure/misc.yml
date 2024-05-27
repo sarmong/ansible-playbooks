@@ -34,11 +34,11 @@
         - ssh-agent
 
     - name: Change user shell
-      ansible.builtin.user:
+      user:
         name: "{{ username }}"
         shell: /usr/bin/zsh
         groups: input
-        append: yes
+        append: true
 
     - name: Use dash as POSIX shell
       become: true

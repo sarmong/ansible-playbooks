@@ -15,6 +15,7 @@
       copy:
         src: "{{ item }}"
         dest: /etc/lightdm/"{{ item | basename }}"
+        mode: preserve
       loop:
         - ~/.local/bin/services/lightdm/lightdm.conf
         - ~/.local/bin/services/lightdm/lightdm-gtk-greeter.conf

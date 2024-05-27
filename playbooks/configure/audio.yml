@@ -21,6 +21,7 @@
       copy:
         src: ~/.local/bin/services/audio/mpris-proxy.service
         dest: "{{ dir }}/mpris-proxy.service"
+        mode: preserve
 
     - name: Enable mpris-proxy service
       systemd_service:

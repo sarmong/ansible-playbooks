@@ -15,12 +15,14 @@
       copy:
         src: ~/.local/bin/services/keyd/default.conf
         dest: /etc/keyd/default.conf
+        mode: preserve
       when: ansible_hostname != 'air'
 
     - name: Copy mac config file
       copy:
         src: ~/.local/bin/services/keyd/mac.conf
         dest: /etc/keyd/default.conf
+        mode: preserve
       when: ansible_hostname == 'air'
 
     - name: Enable keyd service

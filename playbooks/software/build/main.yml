@@ -12,6 +12,7 @@
         path: ~/.local/src
         state: directory
         recurse: true
+        mode: "0755"
 
 - import_playbook: tmux.yml
 - import_playbook: newsboat.yml

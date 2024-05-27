@@ -4,7 +4,6 @@
   tasks:
     - name: Install base packages
       apt:
-        state: latest
         name:
           - nala
           - git
@@ -22,7 +21,6 @@
 
     - name: Install DE packages
       apt:
-        state: latest
         name:
           - xorg
           - xdotool
@@ -72,7 +70,6 @@
 
     - name: Install applications
       apt:
-        state: latest
         name:
           - alacritty
           - kitty
@@ -107,7 +104,6 @@
 
     - name: Install CLI utils
       apt:
-        state: latest
         name:
           - pandoc
           - htop
