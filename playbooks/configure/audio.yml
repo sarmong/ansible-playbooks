@@ -2,7 +2,6 @@
 
 - name: Control bluetooth from headphones
   hosts: localhost
-  become: true
   vars:
     dir: ~/.config/systemd/user
   tasks:
@@ -13,6 +12,7 @@
         recurse: true
 
     - name: Check packages
+      become: true
       apt:
         state: present
         name: bluez
