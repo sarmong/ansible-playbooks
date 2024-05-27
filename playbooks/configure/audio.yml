@@ -24,7 +24,17 @@
 
     - name: Enable mpris-proxy service
       systemd_service:
+        name: mpris-proxy
+        daemon_reload: true
         state: started
         enabled: true
-        name: mpris-proxy
         scope: user
+
+    ## https://wiki.archlinux.org/title/bluetooth_headset
+    ## https://askubuntu.com/questions/1405486/cant-control-bluetooth-volume-level-only-mute-or-full-volume
+    - name: Disable absolute volume
+      become: true
+      lineinfile:
+        path: /etc/pulse/default.pa
+        regexp: "^load-module module-bluetooth-discover$"
+        line: load-module module-bluetooth-discover avrcp_absolute_volume=false
