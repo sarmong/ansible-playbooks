@@ -1,0 +1,30 @@
+# vim:ft=yaml.ansible
+
+- name: Configure keyd
+  hosts: localhost
+  become: true
+  tasks:
+    # TODO pacstall
+    # - name: Check packages
+    #   apt:
+    #     state: present
+    #     name: keyd
+
+    # or link?? ( I do link now )
+    - name: Copy config file
+      copy:
+        src: ~/.local/bin/services/keyd/default.conf
+        dest: /etc/keyd/default.conf
+      when: ansible_hostname != 'air'
+
+    - name: Copy mac config file
+      copy:
+        src: ~/.local/bin/services/keyd/mac.conf
+        dest: /etc/keyd/default.conf
+      when: ansible_hostname == 'air'
+
+    - name: Enable keyd service
+      systemd_service:
+        state: started
+        enabled: true
+        name: keyd

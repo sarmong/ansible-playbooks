@@ -1,0 +1,21 @@
+# vim:ft=yaml.ansible
+
+- name: Configure suspend service
+  hosts: localhost
+  become: true
+  tasks:
+    # or link?? ( I do link now )
+    - name: Copy config files
+      copy:
+        src: "{{ item }}"
+        dest: "/etc/systemd/system/{{ item | basename }}"
+      loop:
+        - ~/.local/bin/services/services/suspend/suspend.service
+        - ~/.local/bin/services/services/suspend/suspend.sh
+
+    - name: Enable suspend service
+      systemd_service:
+        daemon_reload: true
+        state: started
+        enabled: true
+        name: suspend

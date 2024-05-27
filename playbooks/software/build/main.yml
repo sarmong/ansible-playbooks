@@ -1,0 +1,17 @@
+# vim:ft=yaml.ansible
+
+- name: Build packages
+  hosts: localhost
+  tasks:
+    - name: Use neovim
+      tasks:
+        - name: Install neovim stable
+          shell: ~/.local/bin/nvvm use stable
+    - name: Create src dir
+      file:
+        path: ~/.local/src
+        state: directory
+        recurse: true
+
+- import_playbook: tmux.yml
+- import_playbook: newsboat.yml

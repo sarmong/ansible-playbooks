@@ -1,0 +1,30 @@
+# vim:ft=yaml.ansible
+
+- name: Control bluetooth from headphones
+  hosts: localhost
+  become: true
+  vars:
+    dir: ~/.config/systemd/user
+  tasks:
+    - name: Create user systemd dir
+      file:
+        path: "{{ dir }}"
+        state: directory
+        recurse: true
+
+    - name: Check packages
+      apt:
+        state: present
+        name: bluez
+
+    - name: Copy service file
+      copy:
+        src: ~/.local/bin/services/audio/mpris-proxy.service
+        dest: "{{ dir }}/mpris-proxy.service"
+
+    - name: Enable mpris-proxy service
+      systemd_service:
+        state: started
+        enabled: true
+        name: mpris-proxy
+        scope: user

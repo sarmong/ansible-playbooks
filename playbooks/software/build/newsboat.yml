@@ -1,0 +1,55 @@
+# vim:ft=yaml.ansible
+
+# TODO
+# figure out how to both use when, but rebuild if failed
+# see https://github.com/tmux/tmux/issues/2705
+- name: Build newsboat
+  hosts: localhost
+  vars:
+    version: r2.29
+    newsboat_name: "newsboat-{{ version }}"
+    tar_url: "https://github.com/newsboat/newsboat/archive/refs/tags/{{version}}.tar.gz"
+    tar_path: "/tmp/{{ version }}.tar.gz"
+    src_base_dir: "/home/michael/.local/src"
+    src_dir: "/home/michael/.local/src/{{ newsboat_name }}"
+
+  tasks:
+    - name: Install newsboat build-deps
+      become: true
+      apt:
+        state: build-dep
+        name: newsboat
+
+    - name: Gets tarball
+      get_url:
+        url: "{{ tar_url }}"
+        dest: "{{ tar_path }}"
+      # register: newsboat_tar
+
+    - name: Unarchive source
+      unarchive:
+        src: "{{ tar_path }}"
+        dest: "{{ src_base_dir }}"
+        copy: false
+      # when: newsboat_tar.changed
+      register: newsboat_src_dir
+
+    - name: Apply patch
+      ansible.posix.patch:
+        src: newsboat.patch
+        basedir: "{{ src_dir }}"
+        strip: 1
+
+    - name: Build
+      shell: "make"
+      args:
+        chdir: "{{ src_dir }}"
+      when: newsboat_src_dir.changed
+      register: newsboat_built
+
+    - name: Installing
+      become: true
+      command: make install
+      args:
+        chdir: "{{ src_dir }}"
+      when: newsboat_built.changed

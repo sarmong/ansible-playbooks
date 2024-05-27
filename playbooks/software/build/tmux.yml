@@ -1,0 +1,57 @@
+# vim:ft=yaml.ansible
+
+# TODO
+# figure out how to both use when, but rebuild if failed
+# see https://github.com/tmux/tmux/issues/2705
+- name: Build tmux
+  hosts: localhost
+  vars:
+    version: 3.4
+    tmux_name: "tmux-{{ version }}"
+    tar_url:
+      "https://github.com/tmux/tmux/releases/download/{{ version }}/{{ tmux_name
+      }}.tar.gz"
+    tar_path: "/tmp/{{ tmux_name }}.tar.gz"
+    src_base_dir: "/home/michael/.local/src"
+    src_dir: "/home/michael/.local/src/{{ tmux_name }}"
+
+  tasks:
+    - name: Install tmux build-deps
+      become: true
+      apt:
+        state: build-dep
+        name: tmux
+
+    - name: Gets tarball
+      get_url:
+        url: "{{ tar_url }}"
+        dest: "{{ tar_path }}"
+      # register: tmux_tar
+
+    - name: Unarchive source
+      unarchive:
+        src: "{{ tar_path }}"
+        dest: "{{ src_base_dir }}"
+        copy: false
+      # when: tmux_tar.changed
+      register: tmux_src_dir
+
+    - name: Apply patch
+      ansible.posix.patch:
+        src: tmux.patch
+        basedir: "{{ src_dir }}"
+        strip: 1
+
+    - name: Build
+      shell: "./configure && make"
+      args:
+        chdir: "{{ src_dir }}"
+      when: tmux_src_dir.changed
+      register: tmux_built
+
+    - name: Installing
+      become: true
+      command: make install
+      args:
+        chdir: "{{ src_dir }}"
+      when: tmux_built.changed
