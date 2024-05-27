@@ -3,7 +3,7 @@
 - name: Enable other services
   hosts: localhost
   vars:
-    username: lookup('env', 'USER')
+    username: "{{ lookup('env', 'USER') }}"
   tasks:
     - name: Enable other services
       become: true
@@ -13,7 +13,7 @@
         enabled: true
       loop:
         - NetworkManager
-        - auto-cpufreq
+        # - auto-cpufreq
         - bluetooth
         - "syncthing@{{ username }}"
 
@@ -60,12 +60,27 @@
         masked: true
         scope: user
 
-    # - name: Update tldr
-    #   command: tldr --update
+    - name: Update tldr
+      command:
+        cmd: tldr --update
+        creates: ~/.local/cache/tealdeer
+
+    - name: Install node lts
+      shell:
+        cmd: "fnm install lts/latest && fnm default lts/latest"
+        creates: ~/.local/share/fnm/aliases/default
+
+    # - name: Gather service facts
+    #   service_facts:
     #
-    # - name: Install node lts
-    #   shell: "fnm install lts/latest && fnm default lts/latest"
-    #
-    # - name: Install auto-cpufreq
-    #   become: true
-    #   command: auto-cpufreq --install
+    - name: Install auto-cpufreq if not running
+      become: true
+      vars:
+        auto_cpufreq_service: ansible_facts.services['auto-cpufreq.service']
+      command:
+        cmd: auto-cpufreq --install
+        creates: /etc/systemd/system/multi-user.target.wants/auto-cpufreq.service
+      # when:
+      #   ansible_facts.services['auto-cpureq.service'] is defined and
+      #   ansible_facts.services['auto-cpureq.service'].status == 'enabled'
+      #   and ansible_facts.services['auto-cpureq.service'].state == 'running'
