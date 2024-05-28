@@ -1,148 +1,148 @@
-- name: Install software
-  hosts: localhost
+- name: Install base packages
   become: true
-  tasks:
-    - name: Install base packages
-      apt:
-        name:
-          - nala
-          - git
-          - curl
-          - wget
-          - htop
-          - vim
-          - libsqlite3-dev
-          - ssh
-          - man-db
-          - plocate
-          - zsh
-          - dash
-          - ufw
+  apt:
+    name:
+      - nala
+      - git
+      - curl
+      - wget
+      - htop
+      - vim
+      - libsqlite3-dev
+      - ssh
+      - man-db
+      - plocate
+      - zsh
+      - dash
+      - ufw
 
-    - name: Install DE packages
-      apt:
-        name:
-          - xorg
-          - xdotool
-          - wmctrl
-          - wmname
-          - xdo
-          - xvfb
-          - lightdm
-          - lightdm-gtk-greeter
-          - dunst
-          - picom
-          - arandr
-          - autorandr
-          - lxsession
-          - lxappearance
-          - papirus-icon-theme
-          - qt5ct
-          - adwaita-qt6
-          - fonts-noto
-          - fonts-font-awesome
-          - fonts-ebgaramond
-          - font-manager
-          - fonts-noto-color-emoji
-          - inputplug
-          - xbindkeys
-          - pipewire-audio
-          - pulsemixer
-          - pavucontrol
-          - pamixer
-          - playerctl
-          - bluez
-          - blueman
-          - budgie-network-manager-applet
-          - gnome-keyring
-          - xfce4-power-manager
-          - mate-system-monitor
-          - conky
-          - udiskie
-          - xarchiver
-          - ueberzug
-          - dmenu
-          - rofi
-          - feh
-          - libimage-exiftool-perl
-          - mediainfo
-          - unclutter
+- name: Install DE packages
+  become: true
+  apt:
+    name:
+      - xorg
+      - xdotool
+      - wmctrl
+      - wmname
+      - xdo
+      - xvfb
+      - lightdm
+      - lightdm-gtk-greeter
+      - dunst
+      - picom
+      - arandr
+      - autorandr
+      - lxsession
+      - lxappearance
+      - papirus-icon-theme
+      - qt5ct
+      - adwaita-qt6
+      - fonts-noto
+      - fonts-font-awesome
+      - fonts-ebgaramond
+      - font-manager
+      - fonts-noto-color-emoji
+      - inputplug
+      - xbindkeys
+      - pipewire-audio
+      - pulsemixer
+      - pavucontrol
+      - pamixer
+      - playerctl
+      - bluez
+      - blueman
+      - budgie-network-manager-applet
+      - gnome-keyring
+      - xfce4-power-manager
+      - mate-system-monitor
+      - conky
+      - udiskie
+      - xarchiver
+      - ueberzug
+      - dmenu
+      - rofi
+      - feh
+      - libimage-exiftool-perl
+      - mediainfo
+      - unclutter
 
-    - name: Install applications
-      apt:
-        name:
-          - alacritty
-          - kitty
-          - caja
-          - nsxiv
-          - evince
-          - zathura
-          - zathura-djvu
-          - flameshot
-          - pass
-          - timeshift
-          - safeeyes
-          - xprintidle
-          - redshift
-          - surf
-          - libreoffice
-          - kazam
-          - simplescreenrecorder
-          - goldendict
-          - qbittorrent
-          - webcamoid
-          - sonic-visualiser
-          - syncthing
-          - android-file-transfer
-          # - newsboat
-          - mpv
-          - mpd
-          - mpc
-          - ncmpcpp
-          - mpdris2
-          - lynx
+- name: Install applications
+  become: true
+  apt:
+    name:
+      - alacritty
+      - kitty
+      - caja
+      - nsxiv
+      - evince
+      - zathura
+      - zathura-djvu
+      - flameshot
+      - pass
+      - timeshift
+      - safeeyes
+      - xprintidle
+      - redshift
+      - surf
+      - libreoffice
+      - kazam
+      - simplescreenrecorder
+      - goldendict
+      - qbittorrent
+      - webcamoid
+      - sonic-visualiser
+      - syncthing
+      - android-file-transfer
+      # - newsboat
+      - mpv
+      - mpd
+      - mpc
+      - ncmpcpp
+      - mpdris2
+      - lynx
 
-    - name: Install CLI utils
-      apt:
-        name:
-          - pandoc
-          - htop
-          - trash-cli
-          - xclip
-          # - tmux
-          - ffmpeg
-          - ffmpegthumbnailer
-          - imagemagick
-          - rsync
-          - jq
-          - tree
-          - speedtest-cli
-          - colordiff
-          - bat
-          - yt-dlp
-          - ytfzf
-          - ripgrep
-          - thefuck
-          - atool
-          - unzip
-          - zip
-          - p7zip
-          - moreutils
-          - net-tools
-          - parallel
-          - fdupes
-          - libfile-mimeinfo-perl
-          - neofetch
-          - uglifyjs
-          - entr
-          - scrot
-          - slop
-          - powertop
-          - brightnessctl
-          - urlscan
-          - httpie
-          - tig
-          - zeal
-          - tealdeer
-          - shellcheck
-          - yad
+- name: Install CLI utils
+  become: true
+  apt:
+    name:
+      - pandoc
+      - htop
+      - trash-cli
+      - xclip
+      # - tmux
+      - ffmpeg
+      - ffmpegthumbnailer
+      - imagemagick
+      - rsync
+      - jq
+      - tree
+      - speedtest-cli
+      - colordiff
+      - bat
+      - yt-dlp
+      - ytfzf
+      - ripgrep
+      - thefuck
+      - atool
+      - unzip
+      - zip
+      - p7zip
+      - moreutils
+      - net-tools
+      - parallel
+      - fdupes
+      - libfile-mimeinfo-perl
+      - neofetch
+      - uglifyjs
+      - entr
+      - scrot
+      - slop
+      - powertop
+      - brightnessctl
+      - urlscan
+      - httpie
+      - tig
+      - zeal
+      - tealdeer
+      - shellcheck
+      - yad

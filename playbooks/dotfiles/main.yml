@@ -1,17 +1,21 @@
 # vim:ft=yaml.ansible
 
 - name: Link dotfiles
-  hosts: localhost
-  tasks:
-    - name: Link insides
-      include_tasks: link.yml
-      loop:
-        - src: ~/docs/dotfiles/dotconfig
-          dest: ~/.config
-        - src: ~/docs/dotfiles/dotlocal/share/applications
-          dest: ~/.local/share/applications
-        - src: ~/docs/dotfiles/dotlocal/xdg/icons
-          dest: ~/.local/share/xdg/icons
-        - src: ~/docs/dotfiles/dotlocal/bin
-          dest: ~/.local
-          itself: true
+  include_tasks: link.yml
+  loop:
+    - src: ~/docs/dotfiles/dotconfig
+      dest: ~/.config
+    - src: ~/docs/dotfiles/dotlocal/share/applications
+      dest: ~/.local/share/applications
+    - src: ~/docs/dotfiles/dotlocal/xdg/icons
+      dest: ~/.local/share/xdg/icons
+    - src: ~/docs/dotfiles/dotlocal/bin
+      dest: ~/.local
+      itself: true
+
+- name: Create directories
+  file:
+    path: "{{ item }}"
+    state: directory
+  loop:
+    - ~/.config/systemd/user

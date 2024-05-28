@@ -1,11 +1,10 @@
 # vim:ft=yaml.ansible
 
 - name: Enable other services
-  hosts: localhost
   vars:
     username: "{{ lookup('env', 'USER') }}"
-  tasks:
-    - name: Enable other services
+  block:
+    - name: services | enable other services
       become: true
       systemd_service:
         name: "{{ item }}"
@@ -18,13 +17,13 @@
         - "syncthing@{{ username }}"
 
     ## Shouldn't be started
-    - name: Enable betterlocksreen
+    - name: services | betterlocksreen
       become: true
       systemd_service:
         name: "betterlockscreen@{{ username }}"
         enabled: true
 
-    - name: Enable user services
+    - name: services | user services
       systemd_service:
         name: "{{ item }}"
         scope: user
@@ -48,7 +47,6 @@
         state: link
 
     - name: Link external drives dir
-      become: true
       file:
         src: "/media/{{ username }}"
         dest: ~/drives # TODO or /docs/drives?
@@ -70,9 +68,6 @@
         cmd: "fnm install lts/latest && fnm default lts/latest"
         creates: ~/.local/share/fnm/aliases/default
 
-    # - name: Gather service facts
-    #   service_facts:
-    #
     - name: Install auto-cpufreq if not running
       become: true
       vars:
@@ -80,7 +75,3 @@
       command:
         cmd: auto-cpufreq --install
         creates: /etc/systemd/system/multi-user.target.wants/auto-cpufreq.service
-      # when:
-      #   ansible_facts.services['auto-cpureq.service'] is defined and
-      #   ansible_facts.services['auto-cpureq.service'].status == 'enabled'
-      #   and ansible_facts.services['auto-cpureq.service'].state == 'running'

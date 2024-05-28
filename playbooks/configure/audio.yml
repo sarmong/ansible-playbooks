@@ -1,29 +1,22 @@
 # vim:ft=yaml.ansible
 
 - name: Control bluetooth from headphones
-  hosts: localhost
   vars:
     dir: ~/.config/systemd/user
-  tasks:
-    - name: Create user systemd dir
-      file:
-        path: "{{ dir }}"
-        state: directory
-        recurse: true
-
-    - name: Check packages
+  block:
+    - name: bluetooth | packages
       become: true
       apt:
         state: present
         name: bluez
 
-    - name: Copy service file
+    - name: bluetooth | mpris | copy service file
       copy:
         src: ~/.local/bin/services/audio/mpris-proxy.service
         dest: "{{ dir }}/mpris-proxy.service"
         mode: preserve
 
-    - name: Enable mpris-proxy service
+    - name: bluetooth | mpris | enable service
       systemd_service:
         name: mpris-proxy
         daemon_reload: true
@@ -33,7 +26,7 @@
 
     ## https://wiki.archlinux.org/title/bluetooth_headset
     ## https://askubuntu.com/questions/1405486/cant-control-bluetooth-volume-level-only-mute-or-full-volume
-    - name: Disable absolute volume
+    - name: bluetooth | disable absolute volume
       become: true
       lineinfile:
         path: /etc/pulse/default.pa

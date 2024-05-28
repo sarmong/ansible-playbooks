@@ -1,17 +1,16 @@
 # vim:ft=yaml.ansible
 
 - name: Configure lightdm
-  hosts: localhost
   become: true
-  tasks:
-    - name: Check packages
+  block:
+    - name: lightdm | packages
       apt:
         state: present
         name:
           - lightdm
           - lightdm-gtk-greeter
 
-    - name: Copy config files
+    - name: lightdm | copy config files
       copy:
         src: "{{ item }}"
         dest: /etc/lightdm/"{{ item | basename }}"
@@ -23,7 +22,7 @@
         - ~/.local/bin/services/lightdm/wp.jpg
         - ~/.local/bin/services/lightdm/Xsession
 
-    - name: Enable lightdm service
+    - name: lightdm | enable service
       systemd_service:
         state: started
         enabled: true

@@ -1,19 +1,17 @@
 # vim:ft=yaml.ansible
 
 - name: Configure touchpad
-  hosts: localhost
   become: true
   vars:
     dir: /etc/X11/xorg.conf.d
-  tasks:
-    - name: Create xorg.conf.d dir
+  block:
+    - name: touchpad | create xorg.conf.d dir
       file:
         path: "{{ dir }}"
         state: directory
-        recurse: true
         mode: "0755"
 
-    - name: Copy overrides file
+    - name: touchpad | copy config file
       copy:
         src: ~/.local/bin/setup/touchpad/99-overrides.conf
         dest: "{{ dir }}/99-overrides.conf"

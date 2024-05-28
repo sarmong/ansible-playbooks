@@ -1,19 +1,25 @@
 # vim:ft=yaml.ansible
 
-# TODO
-# figure out how to both use when, but rebuild if failed
+# TODO check if src exists and don't rebuild
 # see https://github.com/tmux/tmux/issues/2705
+- name: newsboat | get installed version
+  command: newsboat -V
+  ignore_errors: true
+  changed_when: false
+  failed_when: false
+  register: newsboat_installed
+
 - name: Build newsboat
-  hosts: localhost
+  when: newsboat_installed.rc != 0
   vars:
-    version: r2.29
+    version: r2.35
     newsboat_name: "newsboat-{{ version }}"
     tar_url: "https://github.com/newsboat/newsboat/archive/refs/tags/{{version}}.tar.gz"
     tar_path: "/tmp/{{ version }}.tar.gz"
     src_base_dir: "/home/michael/.local/src"
     src_dir: "/home/michael/.local/src/{{ newsboat_name }}"
 
-  tasks:
+  block:
     - name: Install newsboat build-deps
       become: true
       apt:
@@ -24,7 +30,7 @@
       get_url:
         url: "{{ tar_url }}"
         dest: "{{ tar_path }}"
-      # register: newsboat_tar
+      register: newsboat_tar
 
     - name: Unarchive source
       unarchive:
@@ -53,3 +59,13 @@
       args:
         chdir: "{{ src_dir }}"
       when: newsboat_built.changed
+
+  rescue:
+    - name: Remove tar file
+      file:
+        path: "{{ tar_path }}"
+        state: absent
+
+    - name: Fail
+      fail:
+        msg: Failed to build newsboat

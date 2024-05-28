@@ -4,7 +4,6 @@
   file:
     path: "{{ item.dest }}"
     state: directory
-    recurse: true
 
 - name: Find all in {{ item.src | basename}}
   find:

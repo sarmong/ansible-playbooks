@@ -1,10 +1,16 @@
 # vim:ft=yaml.ansible
 
-# TODO
-# figure out how to both use when, but rebuild if failed
 # see https://github.com/tmux/tmux/issues/2705
-- name: Build tmux
-  hosts: localhost
+- name: tmux | get installed version
+  command: tmux -V
+  ignore_errors: true
+  changed_when: false
+  failed_when: false
+  register: tmux_installed
+
+- name: Build Tmux
+  # can try to be more sophisticated https://gist.github.com/andrewtimberlake/802bd8d285b3e18c5ebe
+  when: tmux_installed.rc != 0
   vars:
     version: 3.4
     tmux_name: "tmux-{{ version }}"
@@ -15,7 +21,7 @@
     src_base_dir: "/home/michael/.local/src"
     src_dir: "/home/michael/.local/src/{{ tmux_name }}"
 
-  tasks:
+  block:
     - name: Install tmux build-deps
       become: true
       apt:
@@ -55,3 +61,13 @@
       args:
         chdir: "{{ src_dir }}"
       when: tmux_built.changed
+
+  rescue:
+    - name: Remove tar file
+      file:
+        path: "{{ tar_path }}"
+        state: absent
+
+    - name: Fail
+      fail:
+        msg: Failed to build newsboat
