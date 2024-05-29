@@ -66,6 +66,21 @@
       - mediainfo
       - unclutter
 
+- name: pacstall | install DE packages
+  pacstall:
+    name:
+      - wmutils
+      - awesome-git
+      - betterlockscreen
+      # - arc-gruvbox-gtk-theme-git
+      - simp1e-gruvbox-dark-cursor-theme-git
+      - nerd-fonts-jetbrains-mono
+      - nerd-fonts-fira-code
+      - nerd-fonts-fira-mono
+      - keyd
+      - xkblayout-state-git
+      - volctl
+
 - name: Install applications
   become: true
   apt:
@@ -100,6 +115,24 @@
       - ncmpcpp
       - mpdris2
       - lynx
+
+- name: Install applications | pacstall
+  become: true
+  pacstall:
+    name:
+      # - rofi-calc
+      - clipmenu-git
+      - libinput-gestures
+      - auto-cpufreq
+      - czkawka-gui-bin
+      - dragon-drop
+      - vscodium-deb
+      - firefox-bin
+      - brave-browser-deb
+      - protonvpn-gui
+      - telegram-bin
+      - freetube-deb
+      - spotify-client-deb
 
 - name: Install CLI utils
   become: true
@@ -146,3 +179,23 @@
       - tealdeer
       - shellcheck
       - yad
+
+- name: pacstall | install cli utils
+  pacstall:
+    name:
+      - jqp-bin
+      - fzf-bin
+      - fd-deb
+      - zoxide-deb
+      - czkawka-cli-bin
+      - bottom-deb
+      - lf-bin
+      - frece-bin
+      - handlr-bin
+      - onefetch-bin
+      - dua-cli-bin
+      - tokei-bin
+      - fnm-bin
+      - lazygit
+      - github-cli-bin
+      - git-delta-deb
