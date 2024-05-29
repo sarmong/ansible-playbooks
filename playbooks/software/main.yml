@@ -120,6 +120,7 @@
   become: true
   pacstall:
     name:
+      # - selectdefaultapplication
       # - rofi-calc
       - clipmenu-git
       - libinput-gestures
@@ -133,6 +134,12 @@
       - telegram-bin
       - freetube-deb
       - spotify-client-deb
+    # - activitywatch-bin
+    # - monero-gui
+    # - skypeforlinux-stable-bin
+    # - slack-deb
+    # - zoom-deb
+    # - google-chrome-deb
 
 - name: Install CLI utils
   become: true
@@ -183,6 +190,10 @@
 - name: pacstall | install cli utils
   pacstall:
     name:
+      # - mpvc-git
+      # - jira-cli-bin
+      # - yarn
+      # - forgit
       - jqp-bin
       - fzf-bin
       - fd-deb
