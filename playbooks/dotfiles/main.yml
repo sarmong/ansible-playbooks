@@ -8,7 +8,7 @@
     - src: ~/docs/dotfiles/dotlocal/share/applications
       dest: ~/.local/share/applications
     - src: ~/docs/dotfiles/dotlocal/xdg/icons
-      dest: ~/.local/share/xdg/icons
+      dest: ~/.local/xdg/icons
     - src: ~/docs/dotfiles/dotlocal/bin
       dest: ~/.local
       itself: true
