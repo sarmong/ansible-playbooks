@@ -5,6 +5,10 @@
     service_name: geoclue-agent
     dir: ~/.config/systemd/user
   block:
+    - name: geoclue | packages
+      apt:
+        name: geoclue-2.0
+
     # or link?? ( I do link now )
     - name: geoclue | copy service files
       copy:
